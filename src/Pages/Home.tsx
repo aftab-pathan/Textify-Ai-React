@@ -3,7 +3,7 @@ import useTranslate from "../hooks/useTranslate";
 import { rtfToText } from "../utils/rtfToText";
 import TextArea from "../Components/Inputs/TextArea";
 import SpeechRecognitionComponent from "../Components/SpeechRecognition/SpeechRecognitionComponent";
-import { IconCopy, IconStar, IconThumbDown, IconThumbUp, IconVolume } from "@tabler/icons-react";
+import { IconCopy, IconCopyPlusFilled, IconStar, IconThumbDown, IconThumbDownFilled, IconThumbUp, IconThumbUpFilled, IconVolume } from "@tabler/icons-react";
 import FileUpload from "../Components/Inputs/FileUpload";
 import LinkPaste from "../Components/Inputs/LinkPaste";
 import LanguageSelector from "../Components/Inputs/LanguageSelector";
@@ -14,6 +14,9 @@ const Home: React.FC = () => {
   const [sourceText, setSourceText] = useState<string>("");
   const [copied, setCopied] = useState<boolean>(false);
   const [favorite, setFavorite] = useState<boolean>(false);
+  const [like, setLike] = useState<boolean>(false);
+  const [disLike, setDisLike] = useState<boolean>(false);
+  const [audioOn, setAudioOn] = useState<string>("");
   const [languages] = useState<string[]>([
     "Hindi",
     "English",
@@ -56,13 +59,6 @@ const Home: React.FC = () => {
     setTimeout(() => setCopied(false), 2000);
   };
 
-  const handleLike = () => {
-    // Implement like logic
-  };
-
-  const handleDislike = () => {
-    // Implement dislike logic
-  };
 
   const handleFavorite = () => {
     setFavorite(!favorite);
@@ -73,9 +69,11 @@ const Home: React.FC = () => {
     }
   };
 
-  const handleAudioPlayback = (text: string) => {
+  const handleAudioPlayback = async(text: string,type:string) => {
+    setAudioOn(type)
     const utterance = new SpeechSynthesisUtterance(text);
-    window.speechSynthesis.speak(utterance);
+    await window.speechSynthesis.speak(utterance);
+    setAudioOn("")
   };
 
   return (
@@ -111,7 +109,8 @@ const Home: React.FC = () => {
                       />
                       <IconVolume
                         size={22}
-                        onClick={() => handleAudioPlayback(sourceText)}
+                        onClick={() => handleAudioPlayback(sourceText,"source")}
+                        className={audioOn==="source" ? "text-yellow-500" : ""}
                       />
                       <FileUpload handleFileUpload={handleFileUpload} />
                       <LinkPaste handleLinkPaste={handleLinkPaste} />
@@ -138,16 +137,17 @@ const Home: React.FC = () => {
                       />
                       <IconVolume
                         size={22}
-                        onClick={() => handleAudioPlayback(targetText)}
+                        onClick={() => handleAudioPlayback(targetText,"target")}
+                        className={audioOn==="target" ? "text-yellow-500" : ""}
                       />
                     </span>
                     <div className="flex flex-row items-center space-x-2 pr-4 cursor-pointer">
-                      <IconCopy size={22} onClick={handleCopyToClipboard} />
+                      {copied ? <IconCopyPlusFilled size={22} onClick={handleCopyToClipboard} /> : <IconCopy size={22} onClick={handleCopyToClipboard} /> }
                       {copied && (
                         <span className="text-xs text-green-500">Copied!</span>
                       )}
-                      <IconThumbUp size={22} onClick={handleLike} />
-                      <IconThumbDown size={22} onClick={handleDislike} />
+                      {like ? <IconThumbUpFilled size={22} onClick={() => setLike(false)}/> : <IconThumbUp size={22} onClick={() => setLike(true)} />}
+                      {disLike ? <IconThumbDownFilled size={22} onClick={() => setDisLike(false)}/> : <IconThumbDown size={22} onClick={() => setDisLike(true)} />}
                       <IconStar
                         size={22}
                         onClick={handleFavorite}
