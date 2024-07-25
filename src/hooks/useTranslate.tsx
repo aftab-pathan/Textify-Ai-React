@@ -1,32 +1,42 @@
 import { useEffect, useState } from "react";
-import { OpenAI } from "openai";
+import { GoogleGenerativeAI } from "@google/generative-ai";
 
-const openai = new OpenAI({
-  apiKey: import.meta.env.VITE_APP_PUBLIC_API_KEY,
-  dangerouslyAllowBrowser: true,
+const apiKey = import.meta.env.VITE_APP_PUBLIC_GOOGLE_AI_API_KEY
+const genAI = new GoogleGenerativeAI(apiKey);
+
+const model = genAI.getGenerativeModel({
+  model: "gemini-1.5-flash",
 });
+const generationConfig = {
+  temperature: 1,
+  topP: 0.95,
+  topK: 64,
+  maxOutputTokens: 8192,
+  responseMimeType: "text/plain",
+};
 
-const useTranslate = (sourceText:any, selectedLanguage:any) => {
+const useTranslate = (sourceText: any, selectedLanguage: any) => {
   const [targetText, setTargetText] = useState("");
 
   useEffect(() => {
-    const handleTranslate = async (sourceText:any) => {
+    const handleTranslate = async (sourceText: any) => {
       try {
-        const response = await openai.chat.completions.create({
-          model: "gpt-4o",
-          messages: [
-            {
-              role: "user",
-              content: `You will be provided with a sentence. This sentence: 
+        const chatSession = model.startChat({
+          generationConfig,
+          // safetySettings: Adjust safety settings
+          // See https://ai.google.dev/gemini-api/docs/safety-settings
+          history: [
+          ],
+        });
+        const result = await chatSession.sendMessage(
+          `You will be provided with a sentence. This sentence: 
               ${sourceText}. Your tasks are to:
               - Detect what language the sentence is in
               - Translate the sentence into ${selectedLanguage}
-              Do not return anything other than the translated sentence.`,
-            },
-          ],
-        });
+              Do not return anything other than the translated sentence.`
+        );
 
-        const data: any = response.choices[0].message.content;
+        const data: any = result.response.text();
         setTargetText(data);
       } catch (error) {
         console.error("Error translating text:", error);
