@@ -29,11 +29,12 @@ const useTranslate = (sourceText: any, selectedLanguage: any) => {
           ],
         });
         const result = await chatSession.sendMessage(
-          `You will be provided with a sentence. This sentence: 
-              ${sourceText}. Your tasks are to:
+          `You will be provided with a sentence.
+            Your tasks are to:
               - Detect what language the sentence is in
               - Translate the sentence into ${selectedLanguage}
-              Do not return anything other than the translated sentence.`
+              Do not return anything other than the translated sentence.
+              The sentence is: ${sourceText}.`
         );
 
         const data: any = result.response.text();

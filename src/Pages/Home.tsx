@@ -15,13 +15,14 @@ const Home: React.FC = () => {
   const [copied, setCopied] = useState<boolean>(false);
   const [favorite, setFavorite] = useState<boolean>(false);
   const [languages] = useState<string[]>([
+    "Hindi",
     "English",
     "Spanish",
     "French",
     "German",
     "Chinese",
   ]);
-  const [selectedLanguage, setSelectedLanguage] = useState<string>("Spanish");
+  const [selectedLanguage, setSelectedLanguage] = useState<string>("Hindi");
 
   const targetText = useTranslate(sourceText, selectedLanguage);
 
@@ -85,11 +86,11 @@ const Home: React.FC = () => {
         <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-24">
           <div className="text-center">
             <h1 className="text-4xl sm:text-6xl font-bold  text-neutral-200">
-              Lingua<span className="text-[#f87315]">Speak</span>
+              Textify<span className="text-[#f87315]">Speak</span>
             </h1>
 
             <p className="mt-3 text-neutral-400">
-              LinguaSpeak: Bridging Voices, Connecting Worlds.
+              TextifySpeak: Bridging Voices, Connecting Worlds.
             </p>
 
             <div className="mt-7 sm:mt-12 mx-auto max-w-3xl relative">
