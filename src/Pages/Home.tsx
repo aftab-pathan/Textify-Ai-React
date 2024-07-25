@@ -69,7 +69,7 @@ const Home: React.FC = () => {
     }
   };
 
-  const handleAudioPlayback = async(text: string,type:string) => {
+  const handleAudioPlayback = async (text: string, type: string) => {
     setAudioOn(type)
     const utterance = new SpeechSynthesisUtterance(text);
     await window.speechSynthesis.speak(utterance);
@@ -77,8 +77,8 @@ const Home: React.FC = () => {
   };
 
   return (
-    <div className="w-full bg-black bg-dot-white/[0.2] bg-dot-black/[0.2] relative flex items-center justify-center">
-      <div className="absolute pointer-events-none inset-0 flex items-center justify-center bg-black [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
+    <div className="h-[50rem] w-full dark:bg-black bg-white  dark:bg-grid-white/[0.2] bg-grid-black/[0.2] relative flex items-center justify-center">
+      <div className="absolute pointer-events-none inset-0 flex items-center justify-center dark:bg-black bg-white [mask-image:radial-gradient(ellipse_at_center,transparent_20%,black)]"></div>
 
       <div className="relative overflow-hidden h-screen">
         <div className="max-w-[85rem] mx-auto px-4 sm:px-6 lg:px-8 py-10 sm:py-24">
@@ -109,8 +109,8 @@ const Home: React.FC = () => {
                       />
                       <IconVolume
                         size={22}
-                        onClick={() => handleAudioPlayback(sourceText,"source")}
-                        className={audioOn==="source" ? "text-yellow-500" : ""}
+                        onClick={() => handleAudioPlayback(sourceText, "source")}
+                        className={audioOn === "source" ? "text-yellow-500" : ""}
                       />
                       <FileUpload handleFileUpload={handleFileUpload} />
                       <LinkPaste handleLinkPaste={handleLinkPaste} />
@@ -137,17 +137,17 @@ const Home: React.FC = () => {
                       />
                       <IconVolume
                         size={22}
-                        onClick={() => handleAudioPlayback(targetText,"target")}
-                        className={audioOn==="target" ? "text-yellow-500" : ""}
+                        onClick={() => handleAudioPlayback(targetText, "target")}
+                        className={audioOn === "target" ? "text-yellow-500" : ""}
                       />
                     </span>
                     <div className="flex flex-row items-center space-x-2 pr-4 cursor-pointer">
-                      {copied ? <IconCopyPlusFilled size={22} onClick={handleCopyToClipboard} /> : <IconCopy size={22} onClick={handleCopyToClipboard} /> }
+                      {copied ? <IconCopyPlusFilled size={22} onClick={handleCopyToClipboard} /> : <IconCopy size={22} onClick={handleCopyToClipboard} />}
                       {copied && (
                         <span className="text-xs text-green-500">Copied!</span>
                       )}
-                      {like ? <IconThumbUpFilled size={22} onClick={() => setLike(false)}/> : <IconThumbUp size={22} onClick={() => setLike(true)} />}
-                      {disLike ? <IconThumbDownFilled size={22} onClick={() => setDisLike(false)}/> : <IconThumbDown size={22} onClick={() => setDisLike(true)} />}
+                      {like ? <IconThumbUpFilled size={22} onClick={() => setLike(false)} /> : <IconThumbUp size={22} onClick={() => setLike(true)} />}
+                      {disLike ? <IconThumbDownFilled size={22} onClick={() => setDisLike(false)} /> : <IconThumbDown size={22} onClick={() => setDisLike(true)} />}
                       <IconStar
                         size={22}
                         onClick={handleFavorite}
